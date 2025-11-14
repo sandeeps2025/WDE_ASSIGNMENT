@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKART - E-Commerce Portal (Single Page View - INR)</title>
+    <style>
+        /* --- CSS VARIABLES & BASE STYLES --- */
+        :root {
+            --primary-color: #ff6f00; /* Orange/Gold for E-commerce */
+            --secondary-color: #2c3e50; /* Dark for contrast */
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --text-light: #ecf0f1;
+            --text-dark: #34495e;
+            --bg-light: #f4f6f8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding-top: 60px;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        .header {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 30px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-menu ul { list-style:none; display:flex; padding:0; margin:0; }
+        .nav-menu ul li { margin-left: 25px; }
+        .nav-menu ul li a {
+            text-decoration:none;
+            color:var(--secondary-color);
+            font-weight:600;
+            transition:0.3s;
+            cursor:pointer;
+        }
+        .nav-menu ul li a.active,
+        .nav-menu ul li a:hover {
+            color:var(--primary-color);
+            border-bottom:2px solid var(--primary-color);
+        }
+
+        /* --- OTHER STYLES REMAIN SAME --- */
+        .container { width:90%; max-width:1400px; margin:20px auto; }
+        section { padding-top:40px; margin-bottom:40px; }
+
+        .hero-section {
+            background:linear-gradient(135deg,var(--primary-color),#ff9800);
+            color:white; padding:60px 40px; text-align:center;
+            border-radius:12px; box-shadow:0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .product-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:30px; padding:20px 0;
+        }
+
+        .product-card {
+            background:white; border-radius:8px; padding-bottom:15px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.08);
+            transition:0.3s; text-align:center;
+        }
+
+        .product-card img.product-img {
+            width:100%; max-height:150px; object-fit:contain;
+            margin-bottom:10px; padding:10px;
+        }
+
+        .submit-btn {
+            background: var(--success-color); color:white; padding:14px 25px;
+            border:none; border-radius:6px; font-size:1.1em;
+            font-weight:bold; cursor:pointer; width:100%; transition:0.3s;
+        }
+
+        .submit-btn:hover { background:#27ae60; }
+
+        .contact-content { display:flex; gap:40px; flex-wrap:wrap; }
+        .contact-form-container, .contact-info {
+            flex:1; min-width:300px; background:white; padding:30px;
+            border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .about-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; margin-top:30px; }
+        .about-card { background:white; padding:25px; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.05); }
+
+        /* Register Form */
+        .form-section { background:white; padding:40px; border-radius:12px; box-shadow:0 4px 15px rgba(0,0,0,0.05); max-width:450px; margin:40px auto; }
+        .form-group { margin-bottom:15px; position:relative; }
+        .form-group label { font-weight:600; }
+        .form-group .feedback-message { color:var(--danger-color); font-size:0.8em; display:none; position:absolute; bottom:-20px; }
+        .form-group input.invalid { border-color:var(--danger-color); }
+        .form-group input.valid { border-color:var(--success-color); }
+
+        .password-strength { height:5px; background:#eee; border-radius:3px; margin-top:5px; overflow:hidden; }
+        .password-strength div { height:100%; width:0%; transition:0.3s; }
+        .weak { background:var(--danger-color); width:33% !important; }
+        .medium { background:var(--primary-color); width:66% !important; }
+        .strong { background:var(--success-color); width:100% !important; }
+
+        .submit-btn:disabled { background:#bdc3c7; cursor:not-allowed; opacity:0.8; }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <a href="#home" class="logo">EKART</a>
+        <nav class="nav-menu">
+            <ul id="main-nav-list">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#products" class="nav-link">Product Items</a></li>
+                <li><a href="#contact" class="nav-link">Contact Us</a></li>
+                <li><a href="#about" class="nav-link">About Us</a></li>
+                <li><a href="#register-section" class="nav-link">Login/Register</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+
+        <!-- HOME -->
+        <section id="home">
+            <div class="hero-section">
+                <h1>Welcome to EKART – India’s Trusted Online Shopping Portal</h1>
+                <p>Unbeatable prices. Fast delivery. Premium quality.</p>
+            </div>
+        </section>
+
+        <!-- PRODUCTS -->
+        <section id="products">
+            <h2>🔥 Trending Products</h2>
+            <div class="product-grid">
+                
+                <div class="product-card">
+                    <img src="https://cdn.mos.cms.futurecdn.net/aeAsuGHPsdeNftt767USaK.jpg" class="product-img">
+                    <h4>Laptop Pro 13</h4>
+                    <p>Price: <strong>₹85,999</strong></p>
+                    <button class="submit-btn" style="width:auto;">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://gourban.in/cdn/shop/files/Pulse.jpg?v=1749553994&width=2048" class="product-img">
+                    <h4>Smartwatch Elite</h4>
+                    <p>Price: <strong>₹14,999</strong></p>
+                    <button class="submit-btn" style="width:auto;">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://www.jiomart.com/images/product/original/rv5fhr7ftp/oshee-store-airbuds-pro-bluetooth-wireless-earphones-with-touchstone-charging-case-tws-earbuds-earphones-product-images-orv5fhr7ftp-p600365586-0-202304132340.jpg" class="product-img">
+                    <h4>Noise-Cancelling Buds</h4>
+                    <p>Price: <strong>₹5,499</strong></p>
+                    <button class="submit-btn" style="width:auto;">Add to Cart</button>
+                </div>
+
+                <div class="product-card">
+                    <img src="https://m.media-amazon.com/images/I/71vm32j2InL._AC_UF1000,1000_QL80_.jpg" class="product-img">
+                    <h4>Gaming Mouse</h4>
+                    <p>Price: <strong>₹1,899</strong></p>
+                    <button class="submit-btn" style="width:auto;">Add to Cart</button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact">
+            <h2>📞 Contact EKART Customer Support</h2>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Contact Information</h3>
+                    <p>
+                        <strong>Customer Service:</strong><br>
+                        Phone: <a href="tel:+918005550123">+91 800 555 0123</a><br>
+                        Email: <a href="mailto:support@ekart.com">support@ekart.com</a>
+                    </p>
+
+                    <p>
+                        <strong>EKART Corporate Office:</strong><br>
+                        401, Digital Tower, Cyber Hub,<br>
+                        Gurugram, Haryana, 122002
+                    </p>
+                </div>
+
+                <div class="contact-form-container">
+                    <h3>Send us a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label>Your Name</label>
+                            <input type="text" id="contact_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Email</label>
+                            <input type="email" id="contact_email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Message</label>
+                            <textarea id="contact_message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Send Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+            <h2>⭐ About EKART</h2>
+            <p>EKART was founded in 2018 with a vision to make online shopping affordable, fast, and reliable for every Indian household.</p>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <h4>Our Mission</h4>
+                    <p>To become India's most customer-centric online marketplace.</p>
+                </div>
+
+                <div class="about-card">
+                    <h4>Our Journey</h4>
+                    <p>Starting from a small warehouse in 2018, EKART now delivers to over 30,000+ pin codes across India.</p>
+                </div>
+
+                <div class="about-card">
+                    <h4>Sustainability</h4>
+                    <p>EKART aims to achieve 100% eco-friendly packaging and carbon-neutral delivery by 2030.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- REGISTER -->
+        <div id="register-section">
+            <section class="form-section">
+                <h3>🔑 Register at EKART</h3>
+                <form id="registrationForm">
+                    
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="reg_name" required data-validation="name">
+                        <div class="feedback-message" id="msg_name">Name must be 3+ characters.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="reg_email" required data-validation="email">
+                        <div class="feedback-message" id="msg_email">Enter a valid email.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="reg_password" required data-validation="password">
+                        <div class="feedback-message" id="msg_password">8+ chars, 1 uppercase, 1 number, 1 symbol.</div>
+                        <div class="password-strength"><div id="strength_bar"></div></div>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn" id="registerBtn" disabled>Create Account</button>
+                </form>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- JAVASCRIPT SAME AS YOUR CODE (only brand names untouched) -->
+    <script>
+        /* Your same JS logic here — completely unchanged */
+
+        function setupScrollObserver() {
+            const sections = document.querySelectorAll('main section, #register-section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const sectionId = entry.target.id;
+                    const link = document.querySelector(\`.nav-link[href="#\${sectionId}"]\`);
+
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        if (link) link.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '0px 0px -50% 0px' });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        class FormValidator {
+            constructor(formId) {
+                this.form = document.getElementById(formId);
+                this.inputs = this.form.querySelectorAll('input[data-validation]');
+                this.submitButton = document.getElementById('registerBtn');
+                this.strengthBar = document.getElementById('strength_bar');
+
+                this.rules = {
+                    name: /^.{3,}$/,
+                    email: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/,
+                    password: /^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()_+])[A-Za-z\\d!@#$%^&*()_+]{8,}$/
+                };
+
+                this.initListeners();
+            }
+
+            initListeners() {
+                this.inputs.forEach(input => {
+                    input.addEventListener('input', () => this.handleInput(input));
+                });
+
+                this.form.addEventListener('submit', e => this.handleSubmit(e));
+            }
+
+            getStrength(password) {
+                let score = 0;
+                if (password.length > 7) score++;
+                if (/[A-Z]/.test(password)) score++;
+                if (/\\d/.test(password)) score++;
+                if (/[!@#$%^&*()_+]/.test(password)) score++;
+                return score;
+            }
+
+            updatePasswordStrength(input) {
+                const strength = this.getStrength(input.value);
+                this.strengthBar.className = '';
+                
+                if (!input.value.length) {
+                    this.strengthBar.style.width = '0%';
+                } else if (strength < 2) {
+                    this.strengthBar.classList.add('weak');
+                } else if (strength < 4) {
+                    this.strengthBar.classList.add('medium');
+                } else {
+                    this.strengthBar.classList.add('strong');
+                }
+            }
+
+            validate(input) {
+                const type = input.dataset.validation;
+                const value = input.value.trim();
+
+                if (type === 'password') this.updatePasswordStrength(input);
+                if (!value.length) return false;
+
+                return this.rules[type].test(value);
+            }
+
+            handleInput(input) {
+                const msg = document.getElementById(\`msg_\${input.id.split('_')[1]}\`);
+                const valid = this.validate(input);
+
+                if (!input.value.length) {
+                    input.classList.remove('valid', 'invalid');
+                    if (msg) msg.style.display = 'none';
+                } else if (valid) {
+                    input.classList.add('valid');
+                    input.classList.remove('invalid');
+                    if (msg) msg.style.display = 'none';
+                } else {
+                    input.classList.add('invalid');
+                    input.classList.remove('valid');
+                    if (msg) msg.style.display = 'block';
+                }
+
+                this.updateSubmitState();
+            }
+
+            updateSubmitState() {
+                let valid = true;
+                this.inputs.forEach(input => {
+                    if (!this.validate(input)) valid = false;
+                });
+                this.submitButton.disabled = !valid;
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+                alert("Registration Successful! Welcome to EKART.");
+                this.form.reset();
+                this.submitButton.disabled = true;
+                this.strengthBar.className = '';
+            }
+        }
+
+        function setupContactForm() {
+            const form = document.getElementById('contactForm');
+            form.addEventListener('submit', e => {
+                e.preventDefault();
+                alert('Your message has been sent to EKART Support.');
+                form.reset();
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupScrollObserver();
+            new FormValidator('registrationForm');
+            setupContactForm();
+        });
+    </script>
+
+</body>
+</html>
